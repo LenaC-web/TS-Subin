@@ -9,11 +9,9 @@ const getProductList = async (params) => {
   url.searchParams.append("page", params.page);
   url.searchParams.append("pageSize", params.pageSize);
   url.searchParams.append("keyword", params.keyword);
-
   const data = await res.json();
   console.log(data);
 };
-
 // GET Product/:id
 const getProduct = async (params) => {
   const url = new URL(
@@ -25,7 +23,6 @@ const getProduct = async (params) => {
   const data = await res.json();
   console.log(data);
 };
-
 // POST Product
 const createProduct = async (params) => {
   const res = await fetch(
@@ -47,9 +44,7 @@ const createProduct = async (params) => {
   const data = await res.json();
   return data;
 };
-
 // PATCH Product
-
 const patchProduct = async (params) => {
   const url = new URL(
     `https://sprint-mission-api.vercel.app/api/products/${params.id}`
@@ -71,9 +66,7 @@ const patchProduct = async (params) => {
   const data = await res.json();
   return data;
 };
-
 // DELETE Product
-
 const deleteProduct = async (params) => {
   const url = new URL(
     `https://sprint-mission-api.vercel.app/api/products/${params.id}`
@@ -90,7 +83,6 @@ const deleteProduct = async (params) => {
   const data = await res.json();
   return data;
 };
-
 export default {
   getProductList,
   getProduct,
