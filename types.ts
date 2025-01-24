@@ -40,6 +40,7 @@ export type GetProductParams = {
 };
 
 export type PostProductParams = {
+  id: string;
   name: string;
   description: string;
   price: number;

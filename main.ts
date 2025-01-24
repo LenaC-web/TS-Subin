@@ -1,10 +1,6 @@
 import articleAPI from "./article";
 import productAPI from "./products";
-import type {
-  PostProductParams,
-  PatchProductParams,
-  GetProductListParams,
-} from "./types";
+import type { PostProductParams, PatchProductParams } from "./types";
 
 // 게시글 목록을 가져오고 상태 코드가 2XX가 아닐 경우 오류를 처리.
 async function getArticleList() {
@@ -15,15 +11,19 @@ async function getArticleList() {
       keyword: "example",
     });
     if (!response.ok) {
-      throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      throw new Error(
+        `HTTP error! status: ${response.status} - ${response.statusText}`
+      );
     }
     const data = await response.json();
     console.log("Article List:", data);
     return data;
   } catch (error) {
     if (error instanceof Error) {
-      console.error("Failed to get article list: ", error.message);
+      console.error("Failed to get list: ", error.message);
     }
+    console.error("Failed to get list generic error", error);
+    throw error;
   }
 }
 
@@ -50,8 +50,7 @@ async function deleteArticle(id: string) {
   try {
     const response = await articleAPI.deleteArticle({ id });
     if (!response.ok) {
-      console.error(`Error: ${response.status} - ${response.statusText}`);
-      return;
+      throw new Error(`Error: ${response.status} - ${response.statusText}`);
     }
     const data = await response.json();
     console.log("Delete article: ", data);
@@ -73,7 +72,7 @@ async function fetchProductList() {
     console.log("Product List:", response);
     if (!response.ok) {
       throw new Error(
-        `Error status: ${response.status} - ${response.statusText}`
+        `HTTP error! status: ${response.status} - ${response.statusText}`
       );
     }
 
@@ -85,6 +84,7 @@ async function fetchProductList() {
     if (error instanceof Error) {
       console.error("Failed to fetch product list:", error.message);
     }
+    throw error;
   }
 }
 // try/catch를 사용하여 ID로 특정 상품 가져오기
@@ -116,6 +116,7 @@ async function fetchProduct(id: string) {
 async function createNewProduct() {
   try {
     const params: PostProductParams = {
+      id: "1",
       name: "New Product",
       description: "This is a new product",
       price: 100,
@@ -128,7 +129,7 @@ async function createNewProduct() {
     console.log("Posted Product:", response);
     if (!response.ok) {
       throw new Error(
-        `Error status: ${response.status} - ${response.statusText}`
+        `HTTP Error! status: ${response.status} - ${response.statusText}`
       );
     }
 
@@ -161,7 +162,7 @@ async function updateProduct(id: string) {
     console.log("Updated Product:", response);
     if (!response.ok) {
       throw new Error(
-        `Error status: ${response.status} - ${response.statusText}`
+        `HTTP Error! status: ${response.status} - ${response.statusText}`
       );
     }
 
@@ -171,7 +172,7 @@ async function updateProduct(id: string) {
   } catch (error) {
     // 오류 처리 및 오류 메시지 출력
     if (error instanceof Error) {
-      console.error("Failed to create product:", error.message);
+      console.error("Failed to update product:", error.message);
     }
   }
   // try/catch를 사용하여 상품 삭제하기
@@ -185,7 +186,7 @@ async function updateProduct(id: string) {
     } catch (error) {
       // 오류 처리 및 오류 메시지 출력
       if (error instanceof Error) {
-        console.error("Failed to create product:", error.message);
+        console.error("Failed to delete product:", error.message);
       }
     }
   };
